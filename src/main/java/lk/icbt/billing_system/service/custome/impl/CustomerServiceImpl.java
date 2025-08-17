@@ -11,6 +11,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomerServiceImpl implements CustomerService {
 
@@ -47,7 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean deleteCustomer(String id) throws SQLException {
+    public void deleteCustomer(String id) throws SQLException {
 
         try (Connection connection = this.bds.getConnection()){
             // find customer first
@@ -55,6 +57,14 @@ public class CustomerServiceImpl implements CustomerService {
             // delete customer
             customerDAO.delete(id, connection);
         }
-        return true;
+
+    }
+
+    @Override
+    public List<CustomerDTO> getAll() throws SQLException {
+        try (Connection connection = this.bds.getConnection()){
+            // delete customer
+            return customerDAO.getAll(connection).stream().map(Mapper::toCustomerDTO).collect(Collectors.toList());
+        }
     }
 }

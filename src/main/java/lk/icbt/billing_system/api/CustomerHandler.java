@@ -46,6 +46,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class CustomerHandler extends HttpServlet{
 
@@ -60,22 +61,27 @@ public class CustomerHandler extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter writer = resp.getWriter();
 
+        Jsonb jsonb = JsonbBuilder.create();
+        String customerID = req.getParameter("id");
+        resp.setContentType("application/json");
 
         try {
-            BasicDataSource bds = (BasicDataSource) req.getServletContext().getAttribute("bds");
-            Connection connection = bds.getConnection();//get connection from the connection pool
-            ResultSet resultSet = connection.prepareStatement("SELECT * FROM customer").executeQuery();
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString(1));
-            }
-            connection.close();//return the connection to the connection pool from the consumer pool
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
-        writer.print("do method invoked");
+            if (customerID!=null){
+                // find specific customer
+
+            }else {
+                List<CustomerDTO> allCustomers = customerService.getAll();
+
+                resp.setStatus(HttpServletResponse.SC_OK);
+                jsonb.toJson(new RespondsDTO(200, "Customers Found", allCustomers), resp.getWriter());
+            }
+
+        } catch (SQLException e) {
+            jsonb.toJson(new RespondsDTO(400, "Error", e.getLocalizedMessage()), resp.getWriter());
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -97,6 +103,7 @@ public class CustomerHandler extends HttpServlet{
        try {
            // call service class
            if (customerService.addNewCustomer(customerDTO)){
+               resp.setStatus(HttpServletResponse.SC_CREATED);
                jsonb.toJson(
                        new RespondsDTO(
                                200,
@@ -130,6 +137,7 @@ public class CustomerHandler extends HttpServlet{
             // call service class
             CustomerDTO updateCustomer = customerService.updateCustomer(customerDTO);
             if (updateCustomer!=null){
+                resp.setStatus(HttpServletResponse.SC_OK);
                 jsonb.toJson(
                         new RespondsDTO(
                                 200,
@@ -158,6 +166,7 @@ public class CustomerHandler extends HttpServlet{
 
         try {
             customerService.deleteCustomer(customerID);
+            resp.setStatus(HttpServletResponse.SC_OK);
             jsonb.toJson(new RespondsDTO(200, "Customer successfully deleted", ""), resp.getWriter());
         }catch (SQLException | ConstrainViolationException e){
             jsonb.toJson(new RespondsDTO(400, "Customer not deleted!", e.getLocalizedMessage()), resp.getWriter());

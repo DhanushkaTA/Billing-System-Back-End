@@ -7,17 +7,12 @@ import lk.icbt.billing_system.entity.Customer;
 import lk.icbt.billing_system.entity.SuperEntity;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO {
-
-//    private Connection connection;
-//
-//    public CustomerDAOImpl(Connection connection) {
-//
-//        this.connection = connection;
-//    }
 
     @Override
     public boolean add(Customer customer, Connection connection) throws SQLException {
@@ -57,6 +52,26 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public List<Customer> getAll(Connection connection) throws SQLException {
-        return null;
+
+        return getList(DBUtil.executeQuery(connection,"SELECT * FROM Customer"));
+    }
+
+    private List<Customer> getList(ResultSet resultSet) throws SQLException {
+
+        List<Customer> customerList = new ArrayList<>();
+
+        while (resultSet.next()) {
+
+            customerList.add(
+                    new Customer(
+                            resultSet.getString("accountNumber"),
+                            resultSet.getString("fullName"),
+                            resultSet.getString("address"),
+                            resultSet.getString("phoneNumber"),
+                            resultSet.getInt("uniteConsumed")
+                    ));
+        }
+
+        return customerList;
     }
 }
