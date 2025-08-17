@@ -1,4 +1,4 @@
-package lk.icbt.billing_system.util;
+package lk.icbt.billing_system.dao.util;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

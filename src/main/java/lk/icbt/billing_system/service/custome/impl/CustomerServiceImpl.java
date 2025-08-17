@@ -7,6 +7,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO addNewCustomer(CustomerDTO customerDTO) {
+
+        System.out.println("Print in service");
+
+        System.out.println(customerDTO.toString());
+
+
+
         return null;
     }
 }

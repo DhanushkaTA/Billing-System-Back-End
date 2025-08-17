@@ -30,6 +30,9 @@ package lk.icbt.billing_system.api;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import lk.icbt.billing_system.dto.CustomerDTO;
+import lk.icbt.billing_system.service.ServiceFactory;
+import lk.icbt.billing_system.service.ServiceTypes;
+import lk.icbt.billing_system.service.custome.CustomerService;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.servlet.ServletException;
@@ -44,10 +47,10 @@ import java.sql.SQLException;
 
 public class CustomerHandler extends HttpServlet{
 
-    private String message;
+    private CustomerService customerService;
 
     public void init() {
-        message = "Hello World!";
+        customerService = (CustomerService) ServiceFactory.getServiceFactory().getService(ServiceTypes.CUSTOMER);
     }
 
     @Override
@@ -85,6 +88,9 @@ public class CustomerHandler extends HttpServlet{
         CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
 
         System.out.println(customerDTO.toString());
+
+        // call service class
+        customerService.addNewCustomer(customerDTO);
 
         PrintWriter writer = resp.getWriter();
         writer.print(customerDTO.toString());
