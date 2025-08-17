@@ -7,6 +7,7 @@ import lk.icbt.billing_system.entity.SuperEntity;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO {
 
@@ -35,5 +36,24 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public boolean delete(String s, Connection connection) {
         return false;
+    }
+
+    @Override
+    public Customer update(Customer customer,Connection connection) throws SQLException {
+        boolean isSuccess = DBUtil.executeUpdate(
+                connection,
+                "UPDATE Customer SET fullName=?, address=?, phoneNumber=?, uniteConsumed=? WHERE accountNumber=?",
+                customer.getFullName(),
+                customer.getAddress(),
+                customer.getPhoneNumber(),
+                customer.getUniteConsumed(),
+                customer.getAccountNumber()
+        );
+        return isSuccess ? customer : null;
+    }
+
+    @Override
+    public List<Customer> getAll(Connection connection) throws SQLException {
+        return null;
     }
 }

@@ -95,18 +95,52 @@ public class CustomerHandler extends HttpServlet{
 
        try {
            // call service class
-
            if (customerService.addNewCustomer(customerDTO)){
                jsonb.toJson(
                        new RespondsDTO(
                                200,
-                               "Customer Successfully added!",
+                               "Customer successfully added!",
                                ""), resp.getWriter());
            }
        }catch (SQLException e){
            e.printStackTrace();
            jsonb.toJson(new RespondsDTO(400, "Error !", e.getLocalizedMessage()), resp.getWriter());
        }
+
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        // ensure req type is json
+        if (req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")) {
+            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        }
+
+        // set resp type to json
+        resp.setContentType("application/json");
+
+        Jsonb jsonb = JsonbBuilder.create();
+        CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+
+        System.out.println(customerDTO.toString());
+
+        try {
+            // call service class
+            CustomerDTO updateCustomer = customerService.updateCustomer(customerDTO);
+            if (updateCustomer!=null){
+                jsonb.toJson(
+                        new RespondsDTO(
+                                200,
+                                "Customer successfully updated!",
+                                updateCustomer), resp.getWriter());
+            }else {
+                jsonb.toJson(new RespondsDTO(400, "Customer not updated !",""), resp.getWriter());
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            jsonb.toJson(new RespondsDTO(400, "Error !", e.getLocalizedMessage()), resp.getWriter());
+        }
 
     }
 }

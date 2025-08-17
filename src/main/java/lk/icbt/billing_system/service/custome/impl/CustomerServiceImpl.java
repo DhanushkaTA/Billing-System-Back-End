@@ -25,16 +25,24 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public boolean addNewCustomer(CustomerDTO customerDTO) throws SQLException {
 
-        System.out.println("Print in service");
+        try (Connection connection = this.bds.getConnection();){
+            return customerDAO.add(Mapper.toCustomer(customerDTO),connection);
+        }
 
-        System.out.println(customerDTO.toString());
+    }
 
-        // get db connection
-        Connection connection = this.bds.getConnection();//get connection from the connection pool
+    @Override
+    public CustomerDTO updateCustomer(CustomerDTO customerDTO) throws SQLException {
 
-        // call add customer method
-        return customerDAO.add(Mapper.toCustomer(customerDTO),connection);
+        try (Connection connection = this.bds.getConnection();){
+            Customer updatedCustomer =
+                    customerDAO.update(Mapper.toCustomer(customerDTO), connection);
+            if (updatedCustomer!=null){
+                return Mapper.toCustomerDTO(updatedCustomer);
+            }else {
+                return null;
+            }
+        }
 
-//        return Mapper.toCustomerDTO(new_customer);
     }
 }

@@ -7,4 +7,6 @@ import java.sql.SQLException;
 
 public interface CustomerService extends SuperService {
     boolean addNewCustomer(CustomerDTO customerDTO) throws SQLException;
+
+    CustomerDTO updateCustomer(CustomerDTO customerDTO) throws SQLException;
 }
