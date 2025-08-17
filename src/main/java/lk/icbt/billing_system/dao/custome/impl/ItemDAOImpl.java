@@ -17,7 +17,7 @@ public class ItemDAOImpl implements ItemDAO {
     public boolean add(Item item, Connection connection) throws SQLException {
         return DBUtil.executeUpdate(
                 connection,
-                "INSERT INTO Item VALUES(?,?,?,?,?)",
+                "INSERT INTO Item VALUES(?,?,?,?)",
                 item.getItemCode(),
                 item.getDescription(),
                 item.getUnitPrice(),

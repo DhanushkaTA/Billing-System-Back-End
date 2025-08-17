@@ -13,4 +13,14 @@
         <servlet-name>CustomerHandler</servlet-name>
         <servlet-class>lk.icbt.billing_system.api.CustomerHandler</servlet-class>
     </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ItemHandler</servlet-name>
+        <url-pattern>/item</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ItemHandler</servlet-name>
+        <servlet-class>lk.icbt.billing_system.api.ItemHandler</servlet-class>
+    </servlet>
 </web-app>
