@@ -10,6 +10,13 @@ public class Customer implements SuperEntity{
     public Customer() {
     }
 
+    public Customer(String fullName, String address, String phoneNumber, int uniteConsumed) {
+        this.fullName = fullName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.uniteConsumed = uniteConsumed;
+    }
+
     public Customer(String accountNumber, String fullName, String address, String phoneNumber, int uniteConsumed) {
         this.accountNumber = accountNumber;
         this.fullName = fullName;

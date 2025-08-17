@@ -10,6 +10,13 @@ public class CustomerDTO {
     public CustomerDTO() {
     }
 
+    public CustomerDTO(String fullName, String address, String phoneNumber, int uniteConsumed) {
+        this.fullName = fullName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.uniteConsumed = uniteConsumed;
+    }
+
     public CustomerDTO(String accountNumber, String fullName, String address, String phoneNumber, int uniteConsumed) {
         this.accountNumber = accountNumber;
         this.fullName = fullName;
