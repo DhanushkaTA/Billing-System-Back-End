@@ -1,6 +1,7 @@
 package lk.icbt.billing_system.dao;
 
 import lk.icbt.billing_system.dao.custome.impl.CustomerDAOImpl;
+import lk.icbt.billing_system.dao.custome.impl.ItemDAOImpl;
 
 import java.sql.Connection;
 
@@ -20,6 +21,8 @@ public class DaoFactory {
 //                return new UserDAOImpl();
             case CUSTOMER:
                 return new CustomerDAOImpl();
+            case ITEM:
+                return new ItemDAOImpl();
 //            case ORDER:
 //                return new OrderDAOImpl();
 //            case ORDER_DETAIL:
