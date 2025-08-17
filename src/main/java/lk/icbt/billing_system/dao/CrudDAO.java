@@ -2,10 +2,13 @@ package lk.icbt.billing_system.dao;
 
 import lk.icbt.billing_system.entity.SuperEntity;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public interface CrudDAO<T extends SuperEntity,ID> extends SuperDAO{
 
-    T add(T entity) ;
+    boolean add(T entity, Connection connection) throws SQLException;
 
-    boolean delete(ID id) ;
+    boolean delete(ID id, Connection connection) ;
 
 }

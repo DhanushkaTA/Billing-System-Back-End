@@ -2,6 +2,8 @@ package lk.icbt.billing_system.dao;
 
 import lk.icbt.billing_system.dao.custome.impl.CustomerDAOImpl;
 
+import java.sql.Connection;
+
 public class DaoFactory {
 
     private static DaoFactory daoFactory;

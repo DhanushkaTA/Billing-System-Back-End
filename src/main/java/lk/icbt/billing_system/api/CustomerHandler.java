@@ -30,6 +30,7 @@ package lk.icbt.billing_system.api;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import lk.icbt.billing_system.dto.CustomerDTO;
+import lk.icbt.billing_system.dto.RespondsDTO;
 import lk.icbt.billing_system.service.ServiceFactory;
 import lk.icbt.billing_system.service.ServiceTypes;
 import lk.icbt.billing_system.service.custome.CustomerService;
@@ -48,9 +49,12 @@ import java.sql.SQLException;
 public class CustomerHandler extends HttpServlet{
 
     private CustomerService customerService;
+    private BasicDataSource bds;
 
     public void init() {
-        customerService = (CustomerService) ServiceFactory.getServiceFactory().getService(ServiceTypes.CUSTOMER);
+        bds = (BasicDataSource) this.getServletContext().getAttribute("bds");
+
+        customerService = (CustomerService) ServiceFactory.getServiceFactory().getService(ServiceTypes.CUSTOMER,bds);
     }
 
     @Override
@@ -89,10 +93,20 @@ public class CustomerHandler extends HttpServlet{
 
         System.out.println(customerDTO.toString());
 
-        // call service class
-        customerService.addNewCustomer(customerDTO);
+       try {
+           // call service class
 
-        PrintWriter writer = resp.getWriter();
-        writer.print(customerDTO.toString());
+           if (customerService.addNewCustomer(customerDTO)){
+               jsonb.toJson(
+                       new RespondsDTO(
+                               200,
+                               "Customer Successfully added!",
+                               ""), resp.getWriter());
+           }
+       }catch (SQLException e){
+           e.printStackTrace();
+           jsonb.toJson(new RespondsDTO(400, "Error !", e.getLocalizedMessage()), resp.getWriter());
+       }
+
     }
 }
