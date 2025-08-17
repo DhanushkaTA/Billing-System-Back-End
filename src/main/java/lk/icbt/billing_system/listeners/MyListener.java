@@ -20,7 +20,7 @@ public class MyListener implements ServletContextListener {
         //How to create connection pool
         BasicDataSource bts=new BasicDataSource();
         bts.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        bts.setUrl("jdbc:mysql://localhost/thogakade");
+        bts.setUrl("jdbc:mysql://localhost/pahana_edu");
         bts.setUsername("root");
         bts.setPassword("1234");
 

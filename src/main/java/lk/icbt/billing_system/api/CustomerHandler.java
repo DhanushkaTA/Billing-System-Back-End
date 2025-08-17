@@ -73,6 +73,12 @@ public class CustomerHandler extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        // ensure req type is json
+        if (req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")) {
+            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        }
+
+        // set resp type to json
         resp.setContentType("application/json");
 
         Jsonb jsonb = JsonbBuilder.create();
