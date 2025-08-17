@@ -1,5 +1,6 @@
 package lk.icbt.billing_system.dao;
 
+import lk.icbt.billing_system.dao.exception.ConstrainViolationException;
 import lk.icbt.billing_system.entity.SuperEntity;
 
 import java.sql.Connection;
@@ -10,7 +11,7 @@ public interface CrudDAO<T extends SuperEntity,ID> extends SuperDAO{
 
     boolean add(T entity, Connection connection) throws SQLException;
 
-    boolean delete(ID id, Connection connection) ;
+    void delete(ID id, Connection connection) throws SQLException, ConstrainViolationException;
 
     T update(T entity,Connection connection) throws SQLException;
 

@@ -45,4 +45,16 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
     }
+
+    @Override
+    public boolean deleteCustomer(String id) throws SQLException {
+
+        try (Connection connection = this.bds.getConnection()){
+            // find customer first
+
+            // delete customer
+            customerDAO.delete(id, connection);
+        }
+        return true;
+    }
 }

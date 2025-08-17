@@ -29,6 +29,7 @@ package lk.icbt.billing_system.api;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+import lk.icbt.billing_system.dao.exception.ConstrainViolationException;
 import lk.icbt.billing_system.dto.CustomerDTO;
 import lk.icbt.billing_system.dto.RespondsDTO;
 import lk.icbt.billing_system.service.ServiceFactory;
@@ -135,11 +136,32 @@ public class CustomerHandler extends HttpServlet{
                                 "Customer successfully updated!",
                                 updateCustomer), resp.getWriter());
             }else {
-                jsonb.toJson(new RespondsDTO(400, "Customer not updated !",""), resp.getWriter());
+                jsonb.toJson(new RespondsDTO(400, "Customer not updated!",""), resp.getWriter());
             }
         }catch (SQLException e){
             e.printStackTrace();
             jsonb.toJson(new RespondsDTO(400, "Error !", e.getLocalizedMessage()), resp.getWriter());
+        }
+
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        // set resp type to json
+        resp.setContentType("application/json");
+
+        Jsonb jsonb = JsonbBuilder.create();
+        String customerID = req.getParameter("id");
+
+        System.out.println("Customer ID : "+customerID);
+
+        try {
+            customerService.deleteCustomer(customerID);
+            jsonb.toJson(new RespondsDTO(200, "Customer successfully deleted", ""), resp.getWriter());
+        }catch (SQLException | ConstrainViolationException e){
+            jsonb.toJson(new RespondsDTO(400, "Customer not deleted!", e.getLocalizedMessage()), resp.getWriter());
+            e.printStackTrace();
         }
 
     }

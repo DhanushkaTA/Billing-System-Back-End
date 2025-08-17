@@ -1,6 +1,7 @@
 package lk.icbt.billing_system.dao.custome.impl;
 
 import lk.icbt.billing_system.dao.custome.CustomerDAO;
+import lk.icbt.billing_system.dao.exception.ConstrainViolationException;
 import lk.icbt.billing_system.dao.util.DBUtil;
 import lk.icbt.billing_system.entity.Customer;
 import lk.icbt.billing_system.entity.SuperEntity;
@@ -34,8 +35,10 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public boolean delete(String s, Connection connection) {
-        return false;
+    public void delete(String id, Connection connection) throws SQLException , ConstrainViolationException{
+        if (!DBUtil.executeUpdate(connection, "DELETE FROM Customer WHERE accountNumber=?", id)){
+            throw new ConstrainViolationException("Customer not deleted!");
+        }
     }
 
     @Override
