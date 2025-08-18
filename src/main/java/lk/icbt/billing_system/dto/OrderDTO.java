@@ -1,6 +1,7 @@
 package lk.icbt.billing_system.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public class OrderDTO {
 
@@ -8,15 +9,17 @@ public class OrderDTO {
     private String customerId;
     private Date orderDate;
     private Double total;
+    private List<OrderDetailsDTO> orderDetails;
 
     public OrderDTO() {
     }
 
-    public OrderDTO(String orderId, String customerId, Date orderDate, Double total) {
+    public OrderDTO(String orderId, String customerId, Date orderDate, Double total, List<OrderDetailsDTO> orderDetails) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.orderDate = orderDate;
         this.total = total;
+        this.orderDetails = orderDetails;
     }
 
     public String getOrderId() {
@@ -51,6 +54,14 @@ public class OrderDTO {
         this.total = total;
     }
 
+    public List<OrderDetailsDTO> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetailsDTO> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
     @Override
     public String toString() {
         return "OrderDTO{" +
@@ -58,6 +69,7 @@ public class OrderDTO {
                 ", customerId='" + customerId + '\'' +
                 ", orderDate=" + orderDate +
                 ", total=" + total +
+                ", orderDetails=" + orderDetails +
                 '}';
     }
 }
