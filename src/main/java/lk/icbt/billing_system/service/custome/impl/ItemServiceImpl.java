@@ -3,9 +3,12 @@ package lk.icbt.billing_system.service.custome.impl;
 import lk.icbt.billing_system.dao.DaoFactory;
 import lk.icbt.billing_system.dao.DaoTypes;
 import lk.icbt.billing_system.dao.custome.ItemDAO;
+import lk.icbt.billing_system.dto.CustomerDTO;
 import lk.icbt.billing_system.dto.ItemDTO;
+import lk.icbt.billing_system.entity.Customer;
 import lk.icbt.billing_system.entity.Item;
 import lk.icbt.billing_system.service.custome.ItemService;
+import lk.icbt.billing_system.service.exception.NotFoundException;
 import lk.icbt.billing_system.service.util.Mapper;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -59,6 +62,22 @@ public class ItemServiceImpl implements ItemService {
         try (Connection connection = this.bds.getConnection()){
             // delete customer
             return itemDAO.getAll(connection).stream().map(Mapper::toItemDTO).collect(Collectors.toList());
+        }
+    }
+
+    @Override
+    public ItemDTO getItemByCode(String code) throws SQLException, NotFoundException {
+        try (Connection connection = this.bds.getConnection()){
+            Item item = itemDAO.getByPk(code, connection);
+
+            if (item == null){
+                throw new NotFoundException("Item not found!");
+            }
+            return new ItemDTO(
+                    item.getItemCode(),
+                    item.getDescription(),
+                    item.getUnitPrice(),
+                    item.getQtyOnHand());
         }
     }
 }

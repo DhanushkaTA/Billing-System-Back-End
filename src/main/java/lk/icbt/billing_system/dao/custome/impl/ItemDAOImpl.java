@@ -50,6 +50,25 @@ public class ItemDAOImpl implements ItemDAO {
         return getList(DBUtil.executeQuery(connection,"SELECT * FROM Item"));
     }
 
+    @Override
+    public Item getByPk(String pk, Connection connection) throws SQLException {
+        ResultSet resultSet =
+                DBUtil.executeQuery(connection, "SELECT * FROM Item WHERE itemCode like '% "+pk+"%' LIMIT 1");
+        Item itemById = null;
+        while (resultSet.next()){
+            itemById = new Item(
+                    resultSet.getString("itemCode"),
+                    resultSet.getString("description"),
+                    resultSet.getDouble("unitPrice"),
+                    resultSet.getInt("qtyOnHand")
+            );
+        }
+
+        System.out.println(itemById);
+
+        return itemById;
+    }
+
     private List<Item> getList(ResultSet resultSet) throws SQLException {
 
         List<Item> itemList = new ArrayList<>();

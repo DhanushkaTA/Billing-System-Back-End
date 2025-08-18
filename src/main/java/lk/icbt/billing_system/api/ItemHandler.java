@@ -10,6 +10,7 @@ import lk.icbt.billing_system.service.ServiceFactory;
 import lk.icbt.billing_system.service.ServiceTypes;
 import lk.icbt.billing_system.service.custome.CustomerService;
 import lk.icbt.billing_system.service.custome.ItemService;
+import lk.icbt.billing_system.service.exception.NotFoundException;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.servlet.ServletException;
@@ -35,22 +36,25 @@ public class ItemHandler extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Jsonb jsonb = JsonbBuilder.create();
-        String customerID = req.getParameter("id");
+        String itemCode = req.getParameter("code");
         resp.setContentType("application/json");
 
         try {
 
-            if (customerID!=null){
+            if (itemCode!=null){
                 // find specific customer
+                ItemDTO itemByCode = itemService.getItemByCode(itemCode);
 
+                resp.setStatus(HttpServletResponse.SC_OK);
+                jsonb.toJson(new RespondsDTO(200, "Item found successfully", itemByCode), resp.getWriter());
             }else {
                 List<ItemDTO> list = itemService.getAll();
 
                 resp.setStatus(HttpServletResponse.SC_OK);
-                jsonb.toJson(new RespondsDTO(200, "Item list Found", list), resp.getWriter());
+                jsonb.toJson(new RespondsDTO(200, "Item list found successfully", list), resp.getWriter());
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | NotFoundException e) {
             jsonb.toJson(new RespondsDTO(400, "Error", e.getLocalizedMessage()), resp.getWriter());
             e.printStackTrace();
         }

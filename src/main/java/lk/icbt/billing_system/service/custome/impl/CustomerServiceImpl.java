@@ -6,6 +6,7 @@ import lk.icbt.billing_system.dao.custome.CustomerDAO;
 import lk.icbt.billing_system.dto.CustomerDTO;
 import lk.icbt.billing_system.entity.Customer;
 import lk.icbt.billing_system.service.custome.CustomerService;
+import lk.icbt.billing_system.service.exception.NotFoundException;
 import lk.icbt.billing_system.service.util.Mapper;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -49,10 +50,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void deleteCustomer(String id) throws SQLException {
+    public void deleteCustomer(String id) throws SQLException,NotFoundException {
 
         try (Connection connection = this.bds.getConnection()){
             // find customer first
+            Customer customer = customerDAO.getByPk(id, connection);
+            if (customer == null){
+                throw new NotFoundException("Customer new found!");
+            }
 
             // delete customer
             customerDAO.delete(id, connection);
@@ -65,6 +70,23 @@ public class CustomerServiceImpl implements CustomerService {
         try (Connection connection = this.bds.getConnection()){
             // delete customer
             return customerDAO.getAll(connection).stream().map(Mapper::toCustomerDTO).collect(Collectors.toList());
+        }
+    }
+
+    @Override
+    public CustomerDTO getCustomerByAccNum(String accNum) throws SQLException,NotFoundException {
+        try (Connection connection = this.bds.getConnection()){
+            Customer customer = customerDAO.getByPk(accNum, connection);
+
+            if (customer == null){
+                throw new NotFoundException("Customer not found!");
+            }
+            return new CustomerDTO(
+                    customer.getAccountNumber(),
+                    customer.getFullName(),
+                    customer.getAddress(),
+                    customer.getPhoneNumber(),
+                    customer.getUniteConsumed());
         }
     }
 }

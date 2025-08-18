@@ -1,31 +1,4 @@
 package lk.icbt.billing_system.api;
-//
-//import java.io.*;
-//import jakarta.servlet.http.*;
-//import jakarta.servlet.annotation.*;
-//
-//@WebServlet(name = "helloServlet", value = "/hello-servlet")
-//public class HelloServlet extends HttpServlet {
-//    private String message;
-//
-//    public void init() {
-//        message = "Hello World!";
-//    }
-//
-//    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        response.setContentType("text/html");
-//
-//        // Hello
-//        PrintWriter out = response.getWriter();
-//        out.println("<html><body>");
-//        out.println("<h1>" + message + "</h1>");
-//        out.println("</body></html>");
-//    }
-//
-//    public void destroy() {
-//    }
-//}
-
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -35,6 +8,7 @@ import lk.icbt.billing_system.dto.RespondsDTO;
 import lk.icbt.billing_system.service.ServiceFactory;
 import lk.icbt.billing_system.service.ServiceTypes;
 import lk.icbt.billing_system.service.custome.CustomerService;
+import lk.icbt.billing_system.service.exception.NotFoundException;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.servlet.ServletException;
@@ -42,9 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -70,15 +41,19 @@ public class CustomerHandler extends HttpServlet{
 
             if (customerID!=null){
                 // find specific customer
+                CustomerDTO customerByAccNum = customerService.getCustomerByAccNum(customerID);
+
+                resp.setStatus(HttpServletResponse.SC_OK);
+                jsonb.toJson(new RespondsDTO(200, "Customer found successfully", customerByAccNum), resp.getWriter());
 
             }else {
                 List<CustomerDTO> allCustomers = customerService.getAll();
 
                 resp.setStatus(HttpServletResponse.SC_OK);
-                jsonb.toJson(new RespondsDTO(200, "Customers Found", allCustomers), resp.getWriter());
+                jsonb.toJson(new RespondsDTO(200, "Customers found successfully", allCustomers), resp.getWriter());
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | NotFoundException e) {
             jsonb.toJson(new RespondsDTO(400, "Error", e.getLocalizedMessage()), resp.getWriter());
             e.printStackTrace();
         }
@@ -110,7 +85,7 @@ public class CustomerHandler extends HttpServlet{
                                "Customer successfully added!",
                                ""), resp.getWriter());
            }
-       }catch (SQLException e){
+       }catch (SQLException | NotFoundException e){
            e.printStackTrace();
            jsonb.toJson(new RespondsDTO(400, "Error !", e.getLocalizedMessage()), resp.getWriter());
        }
@@ -168,7 +143,7 @@ public class CustomerHandler extends HttpServlet{
             customerService.deleteCustomer(customerID);
             resp.setStatus(HttpServletResponse.SC_OK);
             jsonb.toJson(new RespondsDTO(200, "Customer successfully deleted", ""), resp.getWriter());
-        }catch (SQLException | ConstrainViolationException e){
+        }catch (SQLException | ConstrainViolationException | NotFoundException e){
             jsonb.toJson(new RespondsDTO(400, "Customer not deleted!", e.getLocalizedMessage()), resp.getWriter());
             e.printStackTrace();
         }

@@ -56,6 +56,25 @@ public class CustomerDAOImpl implements CustomerDAO {
         return getList(DBUtil.executeQuery(connection,"SELECT * FROM Customer"));
     }
 
+    @Override
+    public Customer getByPk(String pk, Connection connection) throws SQLException {
+        ResultSet resultSet =
+                DBUtil.executeQuery(connection, "SELECT * FROM Customer WHERE accountNumber=?", pk);
+        Customer customerById = null;
+        while (resultSet.next()){
+            customerById = new Customer(
+                    resultSet.getString("accountNumber"),
+                    resultSet.getString("fullName"),
+                    resultSet.getString("address"),
+                    resultSet.getString("phoneNumber"),
+                    resultSet.getInt("uniteConsumed")
+            );
+        }
+
+        return customerById;
+
+    }
+
     private List<Customer> getList(ResultSet resultSet) throws SQLException {
 
         List<Customer> customerList = new ArrayList<>();

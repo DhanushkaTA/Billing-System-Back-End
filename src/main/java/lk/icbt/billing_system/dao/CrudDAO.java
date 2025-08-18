@@ -17,4 +17,6 @@ public interface CrudDAO<T extends SuperEntity,ID> extends SuperDAO{
 
     List<T> getAll(Connection connection) throws SQLException;
 
+    T getByPk(ID id,Connection connection) throws SQLException;
+
 }
