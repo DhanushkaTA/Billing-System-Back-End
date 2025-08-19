@@ -91,8 +91,6 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public boolean reduceItemQty(String itemCode, int qty, Connection connection) throws SQLException {
-
-
         return DBUtil.executeUpdate(connection, "UPDATE Item SET qtyOnHand=qtyOnHand-? WHERE itemCode=?", qty, itemCode);
     }
 }
