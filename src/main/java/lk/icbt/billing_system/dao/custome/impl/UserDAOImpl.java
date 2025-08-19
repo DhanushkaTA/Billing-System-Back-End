@@ -40,6 +40,7 @@ public class UserDAOImpl implements UserDAO {
 
         if (resultSet.next()){
             user = new User(
+                    resultSet.getInt("userId"),
                     resultSet.getString("username"),
                     resultSet.getString("password")
             );

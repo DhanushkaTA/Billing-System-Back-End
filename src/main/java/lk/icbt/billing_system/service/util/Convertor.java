@@ -63,6 +63,7 @@ public class Convertor {
 
     public static User toUser(UserDTO dto){
         return new User(
+                dto.getUserId(),
                 dto.getUsername(),
                 dto.getPassword()
         );
@@ -70,6 +71,7 @@ public class Convertor {
 
     public static UserDTO toUserDTO(User user){
         return new UserDTO(
+                user.getUserId(),
                 user.getUsername(),
                 user.getPassword()
         );
