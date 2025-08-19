@@ -3,6 +3,7 @@ package lk.icbt.billing_system.api;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import lk.icbt.billing_system.dao.exception.ConstrainViolationException;
+import lk.icbt.billing_system.dto.LoginDetailsDTO;
 import lk.icbt.billing_system.dto.OrderDTO;
 import lk.icbt.billing_system.dto.RespondsDTO;
 import lk.icbt.billing_system.dto.UserDTO;
@@ -37,9 +38,9 @@ public class UserHandler extends HttpServlet {
         Jsonb jsonb = JsonbBuilder.create();
         try {
 
-            UserDTO userDTO = jsonb.fromJson(req.getReader(), UserDTO.class);
+            LoginDetailsDTO loginDetailsDTO = jsonb.fromJson(req.getReader(), LoginDetailsDTO.class);
 
-            boolean verifyPassword = userService.verifyPassword(userDTO);
+            boolean verifyPassword = userService.verifyPassword(loginDetailsDTO);
 
             if (verifyPassword) {
                 resp.setStatus(HttpServletResponse.SC_OK);

@@ -4,6 +4,7 @@ import lk.icbt.billing_system.dao.DaoFactory;
 import lk.icbt.billing_system.dao.DaoTypes;
 import lk.icbt.billing_system.dao.custome.UserDAO;
 import lk.icbt.billing_system.dao.exception.ConstrainViolationException;
+import lk.icbt.billing_system.dto.LoginDetailsDTO;
 import lk.icbt.billing_system.dto.UserDTO;
 import lk.icbt.billing_system.entity.User;
 import lk.icbt.billing_system.service.custome.UserService;
@@ -25,16 +26,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean verifyPassword(UserDTO userDTO) throws SQLException,ConstrainViolationException,NotFoundException{
+    public boolean verifyPassword(LoginDetailsDTO loginDetailsDTO) throws SQLException,ConstrainViolationException,NotFoundException{
 
         boolean passwordISMatched = false;
 
-        if (!userDTO.getUsername().isEmpty()){
+        if (!loginDetailsDTO.getUsername().isEmpty()){
             //get userDetails from table
-            UserDTO user = this.getUser(userDTO.getUsername());
+            UserDTO user = this.getUser(loginDetailsDTO.getUsername());
 
             //verify password
-            if (userDTO.getPassword().equals(user.getPassword())){
+            if (loginDetailsDTO.getPassword().equals(user.getPassword())){
                 passwordISMatched = true;
             }
 
