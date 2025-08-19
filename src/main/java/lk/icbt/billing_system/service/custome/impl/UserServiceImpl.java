@@ -3,6 +3,7 @@ package lk.icbt.billing_system.service.custome.impl;
 import lk.icbt.billing_system.dao.DaoFactory;
 import lk.icbt.billing_system.dao.DaoTypes;
 import lk.icbt.billing_system.dao.custome.UserDAO;
+import lk.icbt.billing_system.dao.exception.ConstrainViolationException;
 import lk.icbt.billing_system.dto.UserDTO;
 import lk.icbt.billing_system.entity.User;
 import lk.icbt.billing_system.service.custome.UserService;
@@ -24,8 +25,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean verifyPassword(UserDTO userDTO) throws SQLException{
-        return false;
+    public boolean verifyPassword(UserDTO userDTO) throws SQLException,ConstrainViolationException,NotFoundException{
+
+        boolean passwordISMatched = false;
+
+        if (!userDTO.getUsername().isEmpty()){
+            //get userDetails from table
+            UserDTO user = this.getUser(userDTO.getUsername());
+
+            //verify password
+            if (userDTO.getPassword().equals(user.getPassword())){
+                passwordISMatched = true;
+            }
+
+        }else {
+            throw new ConstrainViolationException("Password is empty");
+        }
+
+        return passwordISMatched;
     }
 
     @Override
@@ -39,7 +56,6 @@ public class UserServiceImpl implements UserService {
             }
 
             return Convertor.toUserDTO(userByUsername);
-
         }
     }
 }
