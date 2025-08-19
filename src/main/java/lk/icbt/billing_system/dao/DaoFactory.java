@@ -1,9 +1,6 @@
 package lk.icbt.billing_system.dao;
 
-import lk.icbt.billing_system.dao.custome.impl.CustomerDAOImpl;
-import lk.icbt.billing_system.dao.custome.impl.ItemDAOImpl;
-import lk.icbt.billing_system.dao.custome.impl.OrderDAOImpl;
-import lk.icbt.billing_system.dao.custome.impl.OrderDetailsDAOImpl;
+import lk.icbt.billing_system.dao.custome.impl.*;
 
 import java.sql.Connection;
 
@@ -19,8 +16,8 @@ public class DaoFactory {
 
     public SuperDAO getDAO(DaoTypes daoTypes){
         switch (daoTypes){
-//            case USER:
-//                return new UserDAOImpl();
+            case USER:
+                return new UserDAOImpl();
             case CUSTOMER:
                 return new CustomerDAOImpl();
             case ITEM:

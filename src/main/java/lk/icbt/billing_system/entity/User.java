@@ -1,6 +1,6 @@
 package lk.icbt.billing_system.entity;
 
-public class User {
+public class User implements SuperEntity {
 
     private String username;
     private String password;

@@ -1,13 +1,7 @@
 package lk.icbt.billing_system.service.util;
 
-import lk.icbt.billing_system.dto.CustomerDTO;
-import lk.icbt.billing_system.dto.ItemDTO;
-import lk.icbt.billing_system.dto.OrderDTO;
-import lk.icbt.billing_system.dto.OrderDetailsDTO;
-import lk.icbt.billing_system.entity.Customer;
-import lk.icbt.billing_system.entity.Item;
-import lk.icbt.billing_system.entity.OrderDetails;
-import lk.icbt.billing_system.entity.Orders;
+import lk.icbt.billing_system.dto.*;
+import lk.icbt.billing_system.entity.*;
 
 public class Convertor {
 
@@ -64,6 +58,20 @@ public class Convertor {
                 dto.getCustomerId(),
                 dto.getOrderDate(),
                 dto.getTotal()
+        );
+    }
+
+    public static User toUser(UserDTO dto){
+        return new User(
+                dto.getUsername(),
+                dto.getPassword()
+        );
+    }
+
+    public static UserDTO toUserDTO(User user){
+        return new UserDTO(
+                user.getUsername(),
+                user.getPassword()
         );
     }
 }
