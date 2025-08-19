@@ -3,7 +3,6 @@ package lk.icbt.billing_system.dao.custome.impl;
 import lk.icbt.billing_system.dao.custome.UserDAO;
 import lk.icbt.billing_system.dao.exception.ConstrainViolationException;
 import lk.icbt.billing_system.dao.util.DBUtil;
-import lk.icbt.billing_system.entity.Item;
 import lk.icbt.billing_system.entity.User;
 
 import java.sql.Connection;
