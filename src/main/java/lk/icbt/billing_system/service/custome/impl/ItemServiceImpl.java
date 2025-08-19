@@ -73,11 +73,12 @@ public class ItemServiceImpl implements ItemService {
             if (item == null){
                 throw new NotFoundException("Item not found!");
             }
-            return new ItemDTO(
-                    item.getItemCode(),
-                    item.getDescription(),
-                    item.getUnitPrice(),
-                    item.getQtyOnHand());
+//            return new ItemDTO(
+//                    item.getItemCode(),
+//                    item.getDescription(),
+//                    item.getUnitPrice(),
+//                    item.getQtyOnHand());
+            return Convertor.toItemDTO(item);
         }
     }
 }
