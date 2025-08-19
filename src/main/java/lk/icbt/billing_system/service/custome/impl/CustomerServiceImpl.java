@@ -3,6 +3,7 @@ package lk.icbt.billing_system.service.custome.impl;
 import lk.icbt.billing_system.dao.DaoFactory;
 import lk.icbt.billing_system.dao.DaoTypes;
 import lk.icbt.billing_system.dao.custome.CustomerDAO;
+import lk.icbt.billing_system.dao.util.DBUtil;
 import lk.icbt.billing_system.dto.CustomerDTO;
 import lk.icbt.billing_system.entity.Customer;
 import lk.icbt.billing_system.service.custome.CustomerService;
@@ -11,6 +12,7 @@ import lk.icbt.billing_system.service.util.Convertor;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +31,9 @@ public class CustomerServiceImpl implements CustomerService {
     public boolean addNewCustomer(CustomerDTO customerDTO) throws SQLException {
 
         try (Connection connection = this.bds.getConnection();){
+            //get next acc id
+            String nextCustomerId = customerDAO.getNextCustomerId(connection);
+            customerDTO.setAccountNumber(nextCustomerId);
             return customerDAO.add(Convertor.toCustomer(customerDTO),connection);
         }
 

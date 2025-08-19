@@ -120,23 +120,5 @@ public class ItemDAOImpl implements ItemDAO {
         }
 
         return "I-0001";
-
-//        if((lastSparePartID.equals(""))==false) {
-//            String[] ids = lastSparePartID.split("@");
-//            int id = Integer.parseInt(ids[1]);
-//            id += 1;
-//
-//
-//            boolean isEquals=isDateEquals(ids[0],newDate);
-//            if(!isEquals){
-//                ids[0]="S/"+date;
-//                id=1;
-//            }
-//
-//            String newOrderId=String.format("@%05d",id);
-//            return ids[0] + newOrderId;
-//        }
-//
-//        return newDate+"@00001";
     }
 }
