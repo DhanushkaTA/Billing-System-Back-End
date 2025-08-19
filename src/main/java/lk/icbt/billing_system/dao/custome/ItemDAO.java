@@ -10,4 +10,6 @@ public interface ItemDAO extends CrudDAO<Item, String> {
 
     boolean reduceItemQty(String itemCode,int qty, Connection connection) throws SQLException;
 
+    public String getNextItemCode(Connection connection) throws SQLException;
+
 }

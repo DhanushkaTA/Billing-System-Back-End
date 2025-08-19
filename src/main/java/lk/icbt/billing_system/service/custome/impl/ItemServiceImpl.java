@@ -30,6 +30,12 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public boolean addNewItem(ItemDTO itemDTO) throws SQLException {
         try (Connection connection = this.bds.getConnection();){
+            //get new id
+            String nextItemCode = itemDAO.getNextItemCode(connection);
+
+            System.out.println("Next item code :"+nextItemCode);
+
+            itemDTO.setItemCode(nextItemCode);
             return itemDAO.add(Convertor.toItem(itemDTO),connection);
         }
     }

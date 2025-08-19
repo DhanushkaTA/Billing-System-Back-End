@@ -93,4 +93,50 @@ public class ItemDAOImpl implements ItemDAO {
     public boolean reduceItemQty(String itemCode, int qty, Connection connection) throws SQLException {
         return DBUtil.executeUpdate(connection, "UPDATE Item SET qtyOnHand=qtyOnHand-? WHERE itemCode=?", qty, itemCode);
     }
+
+    @Override
+    public String getNextItemCode(Connection connection) throws SQLException {
+        ResultSet resultSet =
+                DBUtil.executeQuery(connection,"SELECT itemCode FROM Item ORDER BY itemCode DESC LIMIT 1");
+        String lastCode="";
+        if (resultSet.next()){
+            System.out.println("recode ekak set una");
+            lastCode=resultSet.getString("itemCode");
+        }
+        return generateNextItemCode(lastCode);
+    }
+
+    private static String generateNextItemCode(String lastCode) {
+
+        System.out.println("Old code : "+lastCode);
+
+        if (!lastCode.isEmpty()){
+            String[] strings = lastCode.split("-");
+            int num = Integer.parseInt(strings[1]);
+            num += 1;
+
+            String newOrderId=String.format("-%04d",num);
+            return "I"+newOrderId;
+        }
+
+        return "I-0001";
+
+//        if((lastSparePartID.equals(""))==false) {
+//            String[] ids = lastSparePartID.split("@");
+//            int id = Integer.parseInt(ids[1]);
+//            id += 1;
+//
+//
+//            boolean isEquals=isDateEquals(ids[0],newDate);
+//            if(!isEquals){
+//                ids[0]="S/"+date;
+//                id=1;
+//            }
+//
+//            String newOrderId=String.format("@%05d",id);
+//            return ids[0] + newOrderId;
+//        }
+//
+//        return newDate+"@00001";
+    }
 }
