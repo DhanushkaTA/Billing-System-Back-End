@@ -33,4 +33,14 @@
         <servlet-name>OrderHandler</servlet-name>
         <servlet-class>lk.icbt.billing_system.api.OrderHandler</servlet-class>
     </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UserHandler</servlet-name>
+        <url-pattern>/user</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserHandler</servlet-name>
+        <servlet-class>lk.icbt.billing_system.api.UserHandler</servlet-class>
+    </servlet>
 </web-app>
