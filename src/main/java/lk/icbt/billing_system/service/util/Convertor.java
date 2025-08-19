@@ -1,12 +1,15 @@
 package lk.icbt.billing_system.service.util;
 
-import lk.icbt.billing_system.dao.custome.ItemDAO;
 import lk.icbt.billing_system.dto.CustomerDTO;
 import lk.icbt.billing_system.dto.ItemDTO;
+import lk.icbt.billing_system.dto.OrderDTO;
+import lk.icbt.billing_system.dto.OrderDetailsDTO;
 import lk.icbt.billing_system.entity.Customer;
 import lk.icbt.billing_system.entity.Item;
+import lk.icbt.billing_system.entity.OrderDetails;
+import lk.icbt.billing_system.entity.Orders;
 
-public class Mapper {
+public class Convertor {
 
     public static Customer toCustomer (CustomerDTO dto){
         return new Customer(
@@ -46,4 +49,21 @@ public class Mapper {
         );
     }
 
+    public static OrderDetails toOrderDetail(OrderDetailsDTO dto){
+        return new OrderDetails(
+                dto.getOrderID(),
+                dto.getItemCode(),
+                dto.getUnitPrice(),
+                dto.getQty()
+        );
+    }
+
+    public static Orders toOrders(OrderDTO dto){
+        return new Orders(
+                dto.getOrderId(),
+                dto.getCustomerId(),
+                dto.getOrderDate(),
+                dto.getTotal()
+        );
+    }
 }

@@ -52,10 +52,12 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public Item getByPk(String pk, Connection connection) throws SQLException {
+        System.out.println("In Item  ID : "+pk);
         ResultSet resultSet =
-                DBUtil.executeQuery(connection, "SELECT * FROM Item WHERE itemCode like '% "+pk+"%' LIMIT 1");
+                DBUtil.executeQuery(connection, "SELECT * FROM Item WHERE itemCode=?",pk);
         Item itemById = null;
-        while (resultSet.next()){
+
+        if (resultSet.next()){
             itemById = new Item(
                     resultSet.getString("itemCode"),
                     resultSet.getString("description"),
@@ -64,7 +66,7 @@ public class ItemDAOImpl implements ItemDAO {
             );
         }
 
-        System.out.println(itemById);
+//        System.out.println(itemById);
 
         return itemById;
     }
@@ -85,5 +87,12 @@ public class ItemDAOImpl implements ItemDAO {
         }
 
         return itemList;
+    }
+
+    @Override
+    public boolean reduceItemQty(String itemCode, int qty, Connection connection) throws SQLException {
+
+
+        return DBUtil.executeUpdate(connection, "UPDATE Item SET qtyOnHand=qtyOnHand-? WHERE itemCode=?", qty, itemCode);
     }
 }

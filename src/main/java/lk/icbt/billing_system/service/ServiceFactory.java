@@ -2,6 +2,7 @@ package lk.icbt.billing_system.service;
 
 import lk.icbt.billing_system.service.custome.impl.CustomerServiceImpl;
 import lk.icbt.billing_system.service.custome.impl.ItemServiceImpl;
+import lk.icbt.billing_system.service.custome.impl.OrderServiceImpl;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 public class ServiceFactory {
@@ -23,8 +24,8 @@ public class ServiceFactory {
                 return new CustomerServiceImpl(bds);
             case ITEM:
                 return new ItemServiceImpl(bds);
-//            case ORDER:
-//                return new OrderServiceImpl();
+            case ORDER:
+                return new OrderServiceImpl(bds);
 //            case ORDER_DETAIL:
 //                return new OrderDetailsServiceImpl();
             default:

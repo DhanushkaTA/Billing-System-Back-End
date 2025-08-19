@@ -9,7 +9,7 @@ import lk.icbt.billing_system.entity.Customer;
 import lk.icbt.billing_system.entity.Item;
 import lk.icbt.billing_system.service.custome.ItemService;
 import lk.icbt.billing_system.service.exception.NotFoundException;
-import lk.icbt.billing_system.service.util.Mapper;
+import lk.icbt.billing_system.service.util.Convertor;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
@@ -30,7 +30,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public boolean addNewItem(ItemDTO itemDTO) throws SQLException {
         try (Connection connection = this.bds.getConnection();){
-            return itemDAO.add(Mapper.toItem(itemDTO),connection);
+            return itemDAO.add(Convertor.toItem(itemDTO),connection);
         }
     }
 
@@ -38,9 +38,9 @@ public class ItemServiceImpl implements ItemService {
     public ItemDTO updateItem(ItemDTO itemDTO) throws SQLException {
         try (Connection connection = this.bds.getConnection();){
             Item updatedItem =
-                    itemDAO.update(Mapper.toItem(itemDTO), connection);
+                    itemDAO.update(Convertor.toItem(itemDTO), connection);
             if (updatedItem!=null){
-                return Mapper.toItemDTO(updatedItem);
+                return Convertor.toItemDTO(updatedItem);
             }else {
                 return null;
             }
@@ -61,7 +61,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDTO> getAll() throws SQLException {
         try (Connection connection = this.bds.getConnection()){
             // delete customer
-            return itemDAO.getAll(connection).stream().map(Mapper::toItemDTO).collect(Collectors.toList());
+            return itemDAO.getAll(connection).stream().map(Convertor::toItemDTO).collect(Collectors.toList());
         }
     }
 

@@ -7,7 +7,7 @@ import lk.icbt.billing_system.dto.CustomerDTO;
 import lk.icbt.billing_system.entity.Customer;
 import lk.icbt.billing_system.service.custome.CustomerService;
 import lk.icbt.billing_system.service.exception.NotFoundException;
-import lk.icbt.billing_system.service.util.Mapper;
+import lk.icbt.billing_system.service.util.Convertor;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
@@ -29,7 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
     public boolean addNewCustomer(CustomerDTO customerDTO) throws SQLException {
 
         try (Connection connection = this.bds.getConnection();){
-            return customerDAO.add(Mapper.toCustomer(customerDTO),connection);
+            return customerDAO.add(Convertor.toCustomer(customerDTO),connection);
         }
 
     }
@@ -39,9 +39,9 @@ public class CustomerServiceImpl implements CustomerService {
 
         try (Connection connection = this.bds.getConnection();){
             Customer updatedCustomer =
-                    customerDAO.update(Mapper.toCustomer(customerDTO), connection);
+                    customerDAO.update(Convertor.toCustomer(customerDTO), connection);
             if (updatedCustomer!=null){
-                return Mapper.toCustomerDTO(updatedCustomer);
+                return Convertor.toCustomerDTO(updatedCustomer);
             }else {
                 return null;
             }
@@ -69,7 +69,7 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerDTO> getAll() throws SQLException {
         try (Connection connection = this.bds.getConnection()){
             // delete customer
-            return customerDAO.getAll(connection).stream().map(Mapper::toCustomerDTO).collect(Collectors.toList());
+            return customerDAO.getAll(connection).stream().map(Convertor::toCustomerDTO).collect(Collectors.toList());
         }
     }
 
